@@ -14,7 +14,7 @@ EcoSort is a smart waste management system that categorizes waste into wet and d
   2. Arduino IDE (C++)
 
 # Hardware Implementation Block Diagram
-![image](https://github.com/mayankyadav06/Intelligent-Waste-Management-System/assets/140626220/45efde32-2c15-472d-bd3e-16fe74f18ad0)
+![image](https://github.com/mayankyadav06/Intelligent_Waste_Management_System/assets/140626220/4acea288-dc7e-4705-a914-84986301302e)
 
 # To Run this Project
   1. Clone this Repository
