@@ -1,7 +1,14 @@
 package com.example.greenwaste
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -30,11 +37,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.example.greenwaste.ui.theme.GreenWasteTheme
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +73,14 @@ fun BinStatusScreen() {
     database.addValueEventListener(object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             bin.value = dataSnapshot.getValue(Bin::class.java) ?: Bin()
+
+            val oldBin = bin.value
+            bin.value = dataSnapshot.getValue(Bin::class.java) ?: Bin()
+
+            if ((oldBin.distance1 < MAX_BIN_HEIGHT && bin.value.distance1 >= MAX_BIN_HEIGHT) ||
+                (oldBin.distance2 < MAX_BIN_HEIGHT && bin.value.distance2 >= MAX_BIN_HEIGHT)) {
+                sendNotification(context)
+            }
         }
 
         override fun onCancelled(databaseError: DatabaseError) {
@@ -121,6 +141,56 @@ fun BinStatusColumn(title: String, fillLevel: Int, color: Color) {
         )
     }
 }
+fun sendNotification(context: Context) {
+    val notificationId = 101
+    val channelId = "bin_status_channel"
+    val channelName = "Bin Status Channel"
+    val intent = Intent(context, MainActivity::class.java).apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    }
+    val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent,
+        PendingIntent.FLAG_IMMUTABLE)
+
+    val builder = NotificationCompat.Builder(context, channelId)
+        .setSmallIcon(R.drawable.ic_launcher_foreground)
+        .setContentTitle("Bin Status")
+        .setContentText("One or more bins are full.")
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setContentIntent(pendingIntent)
+        .setAutoCancel(true)
+
+    createNotificationChannel(context, channelId, channelName)
+
+    with(NotificationManagerCompat.from(context)) {
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        notify(notificationId, builder.build())
+    }
+}
+
+fun createNotificationChannel(context: Context, channelId: String, channelName: String) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(channelId, channelName, importance)
+        val notificationManager: NotificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+}
+
+
 
 data class Bin(
     var distance1: Int = 0,
