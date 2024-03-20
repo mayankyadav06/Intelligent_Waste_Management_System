@@ -19,10 +19,12 @@ EcoSort is a smart waste management system that categorizes waste into wet and d
 # To Run this Project
   1. Clone this Repository
   2. Connect the sensors with ESP32
-  3. Uploade the .ino file (Smart_Waste_Management_System.ino) to ESP32
-  4. Login to firebase
-  5. Create your project using realtime database
-  6. Create the firebase databse tree in the following manner:
+  3. Open .ino file replace wifi ssid and password with your own
+  4. Replace database URL and API key with your own API key and Database URL
+  5. Uploade the .ino file (Smart_Waste_Management_System.ino) to ESP32
+  6. Login to firebase
+  7. Create your project using realtime database
+  8. Create the firebase databse tree in the following manner:
        root
         |
         --- bin
@@ -31,9 +33,9 @@ EcoSort is a smart waste management system that categorizes waste into wet and d
             --- distance2: Number
             --- latitude: Number
             --- longitude: Number
-  7. Open the Android App Project in Android Studio
-  8. Go to Tools -> Firebase -> Realtime Database -> Connect to Firebase -> Add the realtime database SDK to your app
-  9. Upload the Android Application to your android phone
+  9. Open the Android App Project in Android Studio
+  10. Go to Tools -> Firebase -> Realtime Database -> Connect to Firebase -> Add the realtime database SDK to your app
+  11. Upload the Android Application to your android phone
 
 
 # Smar bin
