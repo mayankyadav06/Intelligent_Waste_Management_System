@@ -15,3 +15,30 @@ EcoSort is a smart waste management system that categorizes waste into wet and d
 
 # Hardware Implementation Block Diagram
 ![image](https://github.com/mayankyadav06/Intelligent-Waste-Management-System/assets/140626220/45efde32-2c15-472d-bd3e-16fe74f18ad0)
+
+# To Run this Project
+  1. Clone this Repository
+  2. Connect the sensors with ESP32
+  3. Uploade the .ino file (Smart_Waste_Management_System.ino) to ESP32
+  4. Login to firebase
+  5. Create your project using realtime database
+  6. Create the firebase databse tree in the following manner:
+       root
+        |
+        --- bin
+            |
+            --- distance1: Number
+            --- distance2: Number
+            --- latitude: Number
+            --- longitude: Number
+  7. Open the Android App Project in Android Studio
+  8. Go to Tools -> Firebase -> Realtime Database -> Connect to Firebase -> Add the realtime database SDK to your app
+  9. Upload the Android Application to your android phone
+
+
+# Smar bin
+![image](https://github.com/mayankyadav06/GreenWaste/assets/140626220/c210de36-82ff-482f-9c7b-d1c81f8022fd)
+![image](https://github.com/mayankyadav06/GreenWaste/assets/140626220/d3911619-0684-4866-a808-3b852ab91c98)
+
+# Android Application 
+![image](https://github.com/mayankyadav06/GreenWaste/assets/140626220/85f2d721-e866-488c-929d-5a6ee6ad0a4e)
